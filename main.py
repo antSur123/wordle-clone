@@ -49,7 +49,6 @@ all_word_list = []
 # Error message
 error_font = pygame.font.SysFont('Arial', 24)
 error_message = None
-error_msg_default = "Hello there!"
 error_msg_too_short = "The word is too short!"
 error_msg_max_length = "Max word length reached!"
 error_msg_not_a_word = "The word wasn't recognized!"
@@ -82,7 +81,7 @@ keyboard_font = pygame.font.SysFont('Consolas Bold', 64)
 keyboard_list = [["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"], ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
                  ["Z", "X", "C", "V", "B", "N", "M"]]
 alphabet_row_lengths = [0, 0, 0, 0]  # There's 1 extra zero to compensate for the next row start.
-keyboard_letter_color_list = [[], [], []]  # [[green_letters], [yellow_letters], [gray_letters]]
+keyboard_letter_color_list = [[], [], []]  # [[green letters], [yellow letters], [gray letters]]
 has_rendered_all_rows_once = False
 
 
@@ -124,8 +123,11 @@ class MenuButton:
 
 
 def center(axis, item):
-    # Takes in an item and an axis, and aligns the item to the center of the screen in the axis.
-    # Should only be used with rendered text and images!
+    '''
+    Takes in an item and an axis, and aligns the item to the center of the screen in the axis.
+
+    Should only be used with rendered text and images
+    '''
     if axis == "x":
         return SCREEN_WIDTH / 2 - item.get_width() / 2
     if axis == "y":
@@ -133,7 +135,7 @@ def center(axis, item):
 
 
 def draw_menu_screen(type_of_menu):
-    # Draws different menus depending on the current menu screen is.
+    '''Draws different menus depending on the current menu screen is.'''
     global end_score
     # Draws the default menu background and title.
     to_side_of_menu = center("x", menu_background) + 25
@@ -204,8 +206,10 @@ def draw_menu_screen(type_of_menu):
 
 
 def draw_keyboard():
-    # Draws the keyboard once to calculate the center of the screen depending on each rows' width,
-    # then it uses the result as the coordinates for each row.
+    '''
+    Draws the keyboard once to calculate the center of the screen depending on each rows' width,
+    then it uses the result as the coordinates for each row.
+    '''
     global has_rendered_all_rows_once
     text_x_start = SCREEN_WIDTH / 2 - alphabet_row_lengths[0] / 2
     text_y_start = 600
@@ -255,7 +259,7 @@ def draw_keyboard():
 
 
 def words_init():
-    # Reads the file and adds every word to all_word_list and removes the newline.
+    '''Reads words from word library to all_word_list.'''
     global all_word_list
     all_word_list = []
 
@@ -265,7 +269,7 @@ def words_init():
 
 
 def choose_word():
-    # Chooses a random word from a file, removes the newline and uppers it.
+    '''Chooses a random word from a file, removes the newline and uppers it.'''
     word_list = []
     with open(f"word_libraries/pick_words/{num_of_letters}_letter_words.txt", "r") as word_file:
         for word in word_file:
@@ -277,8 +281,10 @@ def choose_word():
 
 
 def draw_error_message(message):
-    # Takes the message string and draws it as a message on the screen.
-    # There can only be up to one message present at all times.
+    '''
+    Takes the message string and draws it as a message on the screen.
+    There can only be up to one message present at all times.
+    '''
     global timestamp, alpha, error_message
     error_message = message
     render_text = error_font.render(message, True, WHITE)
@@ -311,7 +317,7 @@ def draw_error_message(message):
 
 
 def draw_tile(x, y, letter, tile_color):
-    # Draws a colored tile at x and y, then draws the text in the tile.
+    '''Draws a colored tile at x and y, then draws the text in the tile.'''
     if tile_color == "green":
         screen.blit(green_tile_img, (x, y))
 
@@ -330,7 +336,7 @@ def draw_tile(x, y, letter, tile_color):
 
 
 def draw_all_tiles(list_of_words):
-    # Draws the grid of all tiles and puts the written words in the tiles
+    '''Draws the grid of all tiles and puts the written words in the tiles.'''
     spacing = default_tile_img.get_width() + 6
     start_x = SCREEN_WIDTH / 2 - (num_of_tiles_in_row * spacing - 8) / 2
     start_y = 70
@@ -362,8 +368,10 @@ def draw_all_tiles(list_of_words):
 
 
 def word_submit_request(word):
-    # Checks if the word is a real word and if it's the right word.
-    # Ends the game if it is the right word, or if it was the last guess.
+    '''
+    Checks if the word is a real word and if it's the right word.
+    Ends the game if it is the right word, or if it was the last guess.
+    '''
     global all_word_list, written_word, menu_screen
     print(f"Submitted word: {word}")
 
@@ -426,7 +434,7 @@ def word_submit_request(word):
 
 
 def start():
-    # Readies all necessary variables to start a new game.
+    '''Readies all necessary variables to start a new game.'''
     print("Start game")
     global chosen_word, menu_screen, end_score
     menu_screen = None
@@ -442,7 +450,7 @@ def start():
 
 
 def buttons_init():
-    # Sets up all buttons.
+    '''Sets up all buttons.'''
     global start_button, main_menu_button
     # Generates word length buttons
     to_side_of_menu = center("x", menu_background) + 40
@@ -476,7 +484,7 @@ def buttons_init():
 
 
 def main_menu():
-    # Resets all variables for a new round.
+    '''Resets all variables for a new round.'''
     print("Opened main menu")
     global tile_color_index, submitted_word_list, written_word, is_application_running, menu_screen,\
         keyboard_letter_color_list
@@ -489,7 +497,7 @@ def main_menu():
 
 
 def word_edit_control(input):
-    # Checks how the player wants to edit the word.
+    '''Checks how the player wants to edit the word.'''
     global written_word
     if input == pygame.K_RETURN:
         word_submit_request(written_word)
@@ -511,7 +519,7 @@ def word_edit_control(input):
 
 
 def menu_button_functionality():
-    # Triggers button and changes its color if activated depending on what menu is active.
+    '''Triggers button and changes its color if activated depending on what menu is active.'''
     global num_of_letters, num_of_tiles_in_row, guesses, num_of_rows
     # Changes color of pressed down button
     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
